@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello {{ controller_name }}!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'src/Controller/AuthController.php'|file_link(0) }}">src/Controller/AuthController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'templates/auth/index.html.twig'|file_link(0) }}">templates/auth/index.html.twig</a></code></li>
+    </ul>
+    
+    <form action="{{ url('billing') }}" method="POST">
+    <script
+      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="pk_test_L3sbUfakApQKHBZOd53tWNDq"
+      data-amount="999"
+      data-name="Stripe.com"
+      data-description="Example charge"
+      data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+      data-locale="auto"
+      data-zip-code="true">
+    </script>
+    <button id="customButton">Purchase</button>
+    <script>
+        var handler = StripeCheckout.configure({
+        key: 'pk_test_L3sbUfakApQKHBZOd53tWNDq',
+        image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+        locale: 'auto',
+        email:'test@sull.com',
+        token: function(token) {
+          // You can access the token ID with `token.id`.
+          // Get the token ID to your server-side code for use.
+        }
+      });
+
+      document.getElementById('customButton').addEventListener('click', function(e) {
+        // Open Checkout with further options:
+        handler.open({
+          name: 'Demo Site',
+          description: '2 widgets',
+          currency: 'eur',
+          amount: 2000
+        });
+        e.preventDefault();
+      });
+
+      // Close Checkout on page navigation:
+      window.addEventListener('popstate', function() {
+        handler.close();
+      });
+    </script>
+</form>
+</div>
+{% endblock %}
